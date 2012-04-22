@@ -56,7 +56,7 @@ function geoMceEdit() {
     $('#cache_note').replaceWith('<textarea id="cache_note" style="width:100%">'+data+'</textarea><a class="btn" href="javascript:;" onclick="ajaxSave();return false;"><span>Save</span></a>');
 		$('textarea').tinymce({
 			// Location of TinyMCE script
-			script_url : "https://raw.github.com/Frodotus/geocaching-map-enhancements/master/js/tiny_mce/tiny_mce.js",
+			script_url : "http://www.leino.net/tiny_mce/tiny_mce.js",
 
 			// General options
 			theme : "advanced",
@@ -73,7 +73,7 @@ function geoMceEdit() {
 			theme_advanced_resizing : true,
 
 			// Example content CSS (should be your site CSS)
-			content_css : "https://raw.github.com/Frodotus/geocaching-map-enhancements/master/css/tinymce.css",
+			content_css : "http://www.leino.net/css/tinymce.css",
 
 			// Replace values for the template plugin
 			template_replace_values : {

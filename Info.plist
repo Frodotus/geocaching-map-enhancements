@@ -32,6 +32,10 @@
 				<string>js/script_includes.js</string>
 			</array>
 		</dict>
+		<key>Stylesheets</key>
+		<array>
+			<string>css/enhances.css</string>
+		</array>
 	</dict>
 	<key>Description</key>
 	<string>Adds Enhancements to Geocaching.com.</string>

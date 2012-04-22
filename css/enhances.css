@@ -1,0 +1,18 @@
+textarea {
+    width: 100%
+}
+.DisclaimerWidget {
+    display: none
+}
+
+#found_stamp {
+    width: 70px;
+}
+
+.solved_stamp {
+
+}
+
+.sticky_note {
+    width: 20px;
+}
