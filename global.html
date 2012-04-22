@@ -2,6 +2,24 @@
 <html>
 <head>
 	<title>Geocaching Enhancements</title>
+<script>
+var enhanced_notes_enabled = safari.extension.settings.getItem('enhanced_notes_enabled');
+var enhanced_notes_remote_database_url = safari.extension.settings.getItem('enhanced_notes_remote_database_url');
+
+function respondToMessage(messageEvent) {
+    if (messageEvent.name == "getEnhancedNotesSettings") {
+        var settings = {
+            'enhanced_notes_enabled': safari.extension.settings.getItem('enhanced_notes_enabled'),
+            'enhanced_notes_remote_database_url': safari.extension.settings.getItem('enhanced_notes_remote_database_url')
+        }
+            
+        safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("enhancedNotesSettings", settings);
+    } 
+}
+
+safari.application.addEventListener("message",respondToMessage,false);
+
+</script>
 </head>
 <body>
 </body>

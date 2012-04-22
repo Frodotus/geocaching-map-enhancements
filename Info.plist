@@ -27,7 +27,9 @@
 		<dict>
 			<key>End</key>
 			<array>
+				<string>js/jquery.min.js</string>
 				<string>js/GeocachingMapEnhancements.user.js</string>
+				<string>js/script_includes.js</string>
 			</array>
 		</dict>
 	</dict>

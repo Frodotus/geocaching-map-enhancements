@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>DefaultValue</key>
+		<string>disabled</string>
+		<key>Key</key>
+		<string>enhanced_notes_enabled</string>
+		<key>Title</key>
+		<string>Enhanced Notes</string>
+		<key>Titles</key>
+		<array>
+			<string>disabled</string>
+			<string>enabled</string>
+			<string>enabled with local database</string>
+			<string>enabled with remote database</string>
+		</array>
+		<key>Type</key>
+		<string>RadioButtons</string>
+		<key>Values</key>
+		<array>
+			<string>disabled</string>
+			<string>enabled</string>
+			<string>local</string>
+			<string>remote</string>
+		</array>
+	</dict>
+	<dict>
+		<key>Key</key>
+		<string>enhanced_notes_remote_database_url</string>
+		<key>Title</key>
+		<string>Remote database URL</string>
+		<key>Type</key>
+		<string>TextField</string>
+	</dict>
+</array>
+</plist>

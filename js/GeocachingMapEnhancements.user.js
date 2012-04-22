@@ -25,7 +25,6 @@
 //	Elevation data and reverse geocoding from Geonames.
 
 // Default parameters
-
 var GME_parameters = {
 	version: "0.5.7",
 	useNewTab: true,		// True opens geocache lists in a new window, rather than replacing the map.
