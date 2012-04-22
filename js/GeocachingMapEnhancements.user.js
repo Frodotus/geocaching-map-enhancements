@@ -48,6 +48,8 @@ var GME_parameters = {
 		{alt:"Ordnance Survey", tileUrl: "http://ecn.t{s}.tiles.virtualearth.net/tiles/r{q}?g=737&productSet=mmOS", subdomains: "0123", minZoom: 0, maxZoom: 17, attribution: "Ordnance Survey imagery from <a href=\'http://maps.bing.com/\'>Bing Maps</a>", name: "bingos" },
 		{alt:"London Street Maps", tileUrl: "http://ecn.t{s}.tiles.virtualearth.net/tiles/r{q}?g=864&productSet=mmCB", subdomains: "0123", minZoom: 14, maxZoom: 17, attribution: "<a href=\'http://maps.bing.com/\'>Bing</a> map data copyright Microsoft and its suppliers", name: "binglondon" },
 		{alt:"Amapy turistická",tileUrl:"http://maps11.i0.cz/mps/ch_turis/{z}/{x}/{x}_{y}.gif",name:"amapy",attribution:"<a href=\'http://amapy.centrum.cz/\'>Amapy</a> turistická",tileSize:256,minZoom:13,maxZoom:16},
+        {alt:"Eniro Topo",tileUrl: "http://ed-map-fi.wide.basefarm.net/ol_tiles/fi/topo/{z}/{x}/{y}.png", name: "enirotopo", attribution: '<a href="http://www.eniro.fi/kartta" target="_blank">Topo maps provided by Eniro</a>',tileSize: 256, minZoom: 0, maxZoom: 18, add_layer: true},
+        {alt:"Eniro Street",tileUrl: "http://ed-map-fi.wide.basefarm.net/ol_tiles/fi/maps/{z}/{x}/{y}.png", name: "enirostreet", attribution: '<a href="http://www.eniro.fi/kartta" target="_blank">Street maps provided by Eniro</a>', tileSize: 256, minZoom: 10, maxZoom: 19, add_layer: true}
 	]
 };
 
