@@ -6,14 +6,12 @@ if (window.top === window) {
             if(!enhanced){
                 var enhancementSettings = msgEvent.message;
                 if(enhancementSettings['enhanced_notes_enabled'] != 'disabled'){
+                    var init_script = document.createElement("script"); 
+                    init_script.innerHTML = "var enhanced_notes_remote_database_url = '"+enhancementSettings['enhanced_notes_remote_database_url']+"'";
+                    document.body.insertBefore(init_script, document.body.firstChild);
                     var script = document.createElement("script");
                     script.src = "http://www.leino.net/tiny_mce/jquery.tinymce.js"
                     document.body.insertBefore(script, document.body.firstChild);
-    /*    
-                    var init_script = document.createElement("script"); 
-                    init_script.innerHTML = "var extension_baseURI = '"+safari.extension.baseURI+"'";
-                    document.body.insertBefore(init_script, document.body.firstChild);
-    */  
                     enhanced = true;
                 }
             }
