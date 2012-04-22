@@ -73,7 +73,7 @@ function geoMceEdit() {
 			theme_advanced_resizing : true,
 
 			// Example content CSS (should be your site CSS)
-			content_css : extension_baseURI+"css/tinymce.css",
+			content_css : "https://raw.github.com/Frodotus/geocaching-map-enhancements/master/css/tinymce.css",
 
 			// Replace values for the template plugin
 			template_replace_values : {
