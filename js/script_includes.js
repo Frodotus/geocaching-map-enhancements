@@ -39,12 +39,17 @@ function ajaxSave() {
         var ed = tinyMCE.get('cache_note');
         var name = escape($('#ctl00_ContentBody_CacheName').html());        
         ed.setProgressState(1); // Show progress
-        $.ajax({
-          type: 'POST',
-          url: enhanced_notes_remote_database_url+"index.php?id="+id+"&name="+name,
-          data: ed.getContent(),
-          success: function ( data ) {ed.setProgressState(0);},
-        });
+        if(enhanced_notes_enabled == 'remote') {
+            $.ajax({
+              type: 'POST',
+              url: enhanced_notes_remote_database_url+"index.php?id="+id+"&name="+name,
+              data: ed.getContent(),
+              success: function ( data ) {ed.setProgressState(0);},
+            });
+        } else if(enhanced_notes_enabled == 'local') {
+            localStorage.setItem(id, ed.getContent());
+            ed.setProgressState(0);
+        }
 }
 
 function geoMceEdit() {
@@ -91,19 +96,25 @@ function loadNotes()
             var cache_name = $('#ctl00_ContentBody_CacheName').html();    
             $('#ctl00_ContentBody_CacheName').html("<img id='found_stamp' src='"+extensionBaseURI+"img/found-stamp.gif'> "+cache_name);
         }
-        $.ajax({
-          url: enhanced_notes_remote_database_url+"index.php?id="+cache_id
-        }).done(function ( data ) {
-            if(data == ""){
-              data = $('#cache_note').html();
-              if(data == "Click to enter a note"){        
-                  data = "";
-              }
-            }
-            var o = $('#cache_note')
+        if(enhanced_notes_enabled == 'remote') {
+            $.ajax({
+              url: enhanced_notes_remote_database_url+"index.php?id="+cache_id
+            }).done(function ( data ) {
+                if(data == ""){
+                  data = $('#cache_note').html();
+                  if(data == "Click to enter a note"){        
+                      data = "";
+                  }
+                }
+                var o = $('#cache_note')
+                $('#cache_note').replaceWith('<div id="cache_note" style="width:100%">'+data+'</div><a id="cache_note_save" class="btn" href="javascript:;" onclick="geoMceEdit();return false;"><span>Edit</span></a>');
+            });
+        } else if(enhanced_notes_enabled == 'local') {
+            var data = localStorage.getItem(cache_id);
+            if(!data) data = "";
             $('#cache_note').replaceWith('<div id="cache_note" style="width:100%">'+data+'</div><a id="cache_note_save" class="btn" href="javascript:;" onclick="geoMceEdit();return false;"><span>Edit</span></a>');
-        });
-    
+        } else {
+        }
         $('.CacheDetailsNavLinks').append('<li><a class="lnk" href="javascript:;" onclick="markStatusSolved(50);return false;"><img src="'+extensionBaseURI+'img/50.png"> <span>Mark as field solvable</span></a></li>');
         $('.CacheDetailsNavLinks').append('<li><a class="lnk" href="javascript:;" onclick="markStatusSolved(99);return false;"><img src="'+extensionBaseURI+'img/99.png"> <span>Mark as solved</span></a></li>');
         $('.UserSuppliedContent').each(function(index) {
@@ -154,7 +165,7 @@ if (window.top === window) {
                 var enhancementSettings = msgEvent.message;
                 if(enhancementSettings['enhanced_notes_enabled'] != 'disabled'){
                     var script3 = document.createElement("script");
-                    script3.innerHTML = "var extensionBaseURI = '"+safari.extension.baseURI+"';var enhanced_notes_remote_database_url = '"+enhancementSettings['enhanced_notes_remote_database_url']+"'; var editMode = false; document.ready = loadNotes();";
+                    script3.innerHTML = "var enhanced_notes_enabled = '"+enhancementSettings['enhanced_notes_enabled']+"';var extensionBaseURI = '"+safari.extension.baseURI+"';var enhanced_notes_remote_database_url = '"+enhancementSettings['enhanced_notes_remote_database_url']+"'; var editMode = false; document.ready = loadNotes();";
                     script3.innerHTML = script3.innerHTML + ajaxSave.valueOf();
                     script3.innerHTML = script3.innerHTML + ajaxLoad.valueOf()
                     script3.innerHTML = script3.innerHTML + markStatusSolved.valueOf()
