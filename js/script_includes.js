@@ -89,7 +89,7 @@ function loadNotes()
         $('#ctl00_ContentBody_advertisingWithUs').hide();
         if($('#ctl00_ContentBody_hlFoundItLog').length != 0){
             var cache_name = $('#ctl00_ContentBody_CacheName').html();    
-            $('#ctl00_ContentBody_CacheName').html("<img id='found_stamp' src='http://www.leino.net/geo/found-stamp.gif'> "+cache_name);
+            $('#ctl00_ContentBody_CacheName').html("<img id='found_stamp' src='"+extensionBaseURI+"img/found-stamp.gif'> "+cache_name);
         }
         $.ajax({
           url: enhanced_notes_remote_database_url+"index.php?id="+cache_id
@@ -104,8 +104,8 @@ function loadNotes()
             $('#cache_note').replaceWith('<div id="cache_note" style="width:100%">'+data+'</div><a id="cache_note_save" class="btn" href="javascript:;" onclick="geoMceEdit();return false;"><span>Edit</span></a>');
         });
     
-        $('.CacheDetailsNavLinks').append('<li><a class="lnk" href="javascript:;" onclick="markStatusSolved(99);return false;"><img src="http://www.leino.net/geo/99.gif"> <span>Mark as solved</span></a></li>');
-        $('.CacheDetailsNavLinks').append('<li><a class="lnk" href="javascript:;" onclick="markStatusSolved(50);return false;"><img src="http://www.leino.net/geo/99.gif"> <span>Mark as field solvable</span></a></li>');
+        $('.CacheDetailsNavLinks').append('<li><a class="lnk" href="javascript:;" onclick="markStatusSolved(50);return false;"><img src="'+extensionBaseURI+'img/50.png"> <span>Mark as field solvable</span></a></li>');
+        $('.CacheDetailsNavLinks').append('<li><a class="lnk" href="javascript:;" onclick="markStatusSolved(99);return false;"><img src="'+extensionBaseURI+'img/99.png"> <span>Mark as solved</span></a></li>');
         $('.UserSuppliedContent').each(function(index) {
 //            $(this).html(linkify($(this).html()));
         });
@@ -162,7 +162,7 @@ if (window.top === window) {
                     script3.innerHTML = script3.innerHTML + loadNotes.valueOf()
                     document.body.insertBefore(script3, document.body.firstChild);
                     var script = document.createElement("script");
-                    script.src = "http://www.leino.net/tiny_mce/jquery.tinymce.js"
+                    script.src = safari.extension.baseURI+"js/tiny_mce/jquery.tinymce.js"
                     document.body.insertBefore(script, document.body.firstChild);
                     enhanced = true;
                 }
