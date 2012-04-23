@@ -117,9 +117,6 @@ function loadNotes()
         }
         $('.CacheDetailsNavLinks').append('<li><a class="lnk" href="javascript:;" onclick="markStatusSolved(50);return false;"><img src="'+extensionBaseURI+'img/50.png"> <span>Mark as field solvable</span></a></li>');
         $('.CacheDetailsNavLinks').append('<li><a class="lnk" href="javascript:;" onclick="markStatusSolved(99);return false;"><img src="'+extensionBaseURI+'img/99.png"> <span>Mark as solved</span></a></li>');
-        $('.UserSuppliedContent').each(function(index) {
-//            $(this).html(linkify($(this).html()));
-        });
     }
 
 
@@ -135,25 +132,27 @@ function loadNotes()
                 
             }
         });
-
-        $.ajax({
-          url: enhanced_notes_remote_database_url+"status.php?ids="+arr.join()
-        }).done(function ( rdata ) {
-            if(rdata != ""){
-              rdata = eval('(' + rdata + ')');
-                $('.SearchResultsTable tr').each(function(i, el) {
-                    var c = $(el).children();
-                    var data = c[3].innerHTML;            
-                    var data2 = c[5].innerHTML;            
-                    if(data.trim() == ""){
-                        var gcid = data2.match(/\bGC[^\b]*?\b/gi);
-                        if(rdata[gcid] > 0){                     
-                            c[3].innerHTML = "<img class='sticky_note' src='"+extensionBaseURI+"img/"+rdata[gcid]+".png'>";
+        if(enhanced_notes_enabled == 'remote') {
+            $.ajax({
+              url: enhanced_notes_remote_database_url+"status.php?ids="+arr.join()
+            }).done(function ( rdata ) {
+                if(rdata != ""){
+                  rdata = eval('(' + rdata + ')');
+                    $('.SearchResultsTable tr').each(function(i, el) {
+                        var c = $(el).children();
+                        var data = c[3].innerHTML;            
+                        var data2 = c[5].innerHTML;            
+                        if(data.trim() == ""){
+                            var gcid = data2.match(/\bGC[^\b]*?\b/gi);
+                            if(rdata[gcid] > 0){                     
+                                c[3].innerHTML = "<img class='sticky_note' src='"+extensionBaseURI+"img/"+rdata[gcid]+".png'>";
+                            }
                         }
-                    }
-                 });
-            }
-        });
+                     });
+                }
+            });
+        } else {
+        }
     }
 }
 
