@@ -22,16 +22,29 @@ function markStatusSolved(stat) {
         } else {
               content = $('#cache_note').html();
         }
-        $.ajax({
-          type: 'POST',
-          url: enhanced_notes_remote_database_url+"index.php?id="+id+"&status="+stat+"&name="+name,
-          data: content,
-          success: function ( data ) {
-            if(editMode)
-                ed.setProgressState(0);
+        if(enhanced_notes_enabled == 'remote') {
+            $.ajax({
+              type: 'POST',
+              url: enhanced_notes_remote_database_url+"index.php?id="+id+"&status="+stat+"&name="+name,
+              data: content,
+              success: function ( data ) {
+                if(editMode)
+                    ed.setProgressState(0);
+                alert("Cache marked as solved.");            
+              },
+            });
+        } else if(enhanced_notes_enabled == 'local') {
+            var data = localStorage.getItem(id);
+            if(data){
+                var odata = JSON.parse(data);
+                data = {'status': stat, 'name': name, 'content': odata['content']};
+            } else {
+                data = {'status': stat, 'name': name, content: ''}
+            }
+            data = JSON.stringify(data);
+            localStorage.setItem(id, data);
             alert("Cache marked as solved.");            
-          },
-        });
+        }
 }
 
 function ajaxSave() {
@@ -54,7 +67,7 @@ function ajaxSave() {
                 if(odata['status']) status = odata['status']; 
                 data = {'status': status, 'name': name, 'content': ed.getContent()};
             } else {
-                data = {status: 1, 'name': name, content: ed.getContent()}
+                data = {'status': 1, 'name': name, 'content': ed.getContent()}
             }
             data = JSON.stringify(data);
             localStorage.setItem(id, data);
@@ -165,7 +178,20 @@ function loadNotes()
                      });
                 }
             });
-        } else {
+        } else if(enhanced_notes_enabled == 'local') {
+            $('.SearchResultsTable tr').each(function(i, el) {
+                var c = $(el).children();
+                var data = c[3].innerHTML;            
+                var data2 = c[5].innerHTML;            
+                if(data.trim() == ""){
+                    var gcid = data2.match(/\bGC[^\b]*?\b/gi);
+                    cdata = localStorage.getItem(gcid)
+                    if(cdata){                     
+                        var cdata = JSON.parse(cdata);
+                        c[3].innerHTML = "<img class='sticky_note' src='"+extensionBaseURI+"img/"+cdata['status']+".png'>";
+                    }
+                }
+             });
         }
     }
 }
