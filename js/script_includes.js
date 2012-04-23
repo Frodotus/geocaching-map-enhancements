@@ -1,14 +1,4 @@
 var enhanced = false;
-function ajaxLoad() {
-        var ed = tinyMCE.get('cache_note');
-
-        // Do you ajax call here, window.setTimeout fakes ajax call
-        ed.setProgressState(1); // Show progress
-        window.setTimeout(function() {
-                ed.setProgressState(0); // Hide progress
-                ed.setContent('HTML content that got passed from server.');
-        }, 3000);
-}
 
 function markStatusSolved(stat) {
         var id = $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode').html();    
@@ -109,16 +99,20 @@ function geoMceEdit() {
         });
 }
 
+function enhanceTitle()
+{
+    alert("enhance_title");
+    if($('#ctl00_ContentBody_hlFoundItLog').length != 0){
+        var cache_name = $('#ctl00_ContentBody_CacheName').html();    
+        $('#ctl00_ContentBody_CacheName').html("<img id='found_stamp' src='"+extensionBaseURI+"img/found.png'> "+cache_name);
+    }
+}
 
 function loadNotes()
 {
     if($('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode').length != 0){
         var cache_id = $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode').html();
         $('#ctl00_ContentBody_advertisingWithUs').hide();
-        if($('#ctl00_ContentBody_hlFoundItLog').length != 0){
-            var cache_name = $('#ctl00_ContentBody_CacheName').html();    
-            $('#ctl00_ContentBody_CacheName').html("<img id='found_stamp' src='"+extensionBaseURI+"img/found-stamp.gif'> "+cache_name);
-        }
         if(enhanced_notes_enabled == 'remote') {
             $.ajax({
               url: enhanced_notes_remote_database_url+"index.php?id="+cache_id
@@ -192,30 +186,53 @@ function loadNotes()
                     }
                 }
              });
-        }
+        }        
     }
 }
+function initEnhancements()
+{
+    alert("enhance_title");
+    if($('#ctl00_ContentBody_hlFoundItLog').length != 0){
+        var cache_name = $('#ctl00_ContentBody_CacheName').html();    
+        $('#ctl00_ContentBody_CacheName').html("<img id='found_stamp' src='"+extensionBaseURI+"img/found.png'> "+cache_name);
+    }
+}
+
 
 if (window.top === window) {
     function getMessage(msgEvent) {
     
         if (msgEvent.name == "enhancedNotesSettings"){            
             if(!enhanced){
+                var script2 = "";
+                var script3 = document.createElement("script");
                 var enhancementSettings = msgEvent.message;
                 if(enhancementSettings['enhanced_notes_enabled'] != 'disabled'){
-                    var script3 = document.createElement("script");
-                    script3.innerHTML = "var enhanced_notes_enabled = '"+enhancementSettings['enhanced_notes_enabled']+"';var extensionBaseURI = '"+safari.extension.baseURI+"';var enhanced_notes_remote_database_url = '"+enhancementSettings['enhanced_notes_remote_database_url']+"'; var editMode = false; document.ready = loadNotes();";
+                    script2 = "var enhanced_notes_enabled = '"+enhancementSettings['enhanced_notes_enabled'] + "';"
+                        + "var extensionBaseURI = '"+safari.extension.baseURI+"';"
+                        + "var enhanced_notes_remote_database_url = '"+enhancementSettings['enhanced_notes_remote_database_url']+"';"
+                        + "var editMode = false;"
+                        + "function init() {"
+                        + "loadNotes();";
+                    script3.innerHTML = script3.innerHTML + initEnhancements.valueOf();
                     script3.innerHTML = script3.innerHTML + ajaxSave.valueOf();
-                    script3.innerHTML = script3.innerHTML + ajaxLoad.valueOf()
                     script3.innerHTML = script3.innerHTML + markStatusSolved.valueOf()
                     script3.innerHTML = script3.innerHTML + geoMceEdit.valueOf()
                     script3.innerHTML = script3.innerHTML + loadNotes.valueOf()
-                    document.body.insertBefore(script3, document.body.firstChild);
                     var script = document.createElement("script");
                     script.src = safari.extension.baseURI+"js/tiny_mce/jquery.tinymce.js"
                     document.body.insertBefore(script, document.body.firstChild);
                     enhanced = true;
                 }
+                
+                if(enhancementSettings['enhance_title']){
+                    script2 = script2 + "enhanceTitle();";                                
+                    script3.innerHTML = script3.innerHTML + enhanceTitle.valueOf();                                
+                }
+                
+                script2 = script2 + "} document.ready = init();";
+                script3.innerHTML = script3.innerHTML + script2;
+                document.body.insertBefore(script3, document.body.firstChild);
             }
         }
     }

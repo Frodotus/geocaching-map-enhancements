@@ -10,7 +10,8 @@ function respondToMessage(messageEvent) {
     if (messageEvent.name == "getEnhancedNotesSettings") {
         var settings = {
             'enhanced_notes_enabled': safari.extension.settings.getItem('enhanced_notes_enabled'),
-            'enhanced_notes_remote_database_url': safari.extension.settings.getItem('enhanced_notes_remote_database_url')
+            'enhanced_notes_remote_database_url': safari.extension.settings.getItem('enhanced_notes_remote_database_url'),
+            'enhance_title': safari.extension.settings.getItem('enhance_title')
         }
             
         safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("enhancedNotesSettings", settings);
