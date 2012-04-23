@@ -54,7 +54,7 @@ function geoMceEdit() {
     $('#cache_note').replaceWith('<textarea id="cache_note" style="width:100%">'+data+'</textarea><a class="btn" href="javascript:;" onclick="ajaxSave();return false;"><span>Save</span></a>');
         $('textarea').tinymce({
             // Location of TinyMCE script
-            script_url : "http://www.leino.net/tiny_mce/tiny_mce.js",
+            script_url : extensionBaseURI+"js/tiny_mce/tiny_mce.js",
 
             // General options
             theme : "advanced",
@@ -71,7 +71,7 @@ function geoMceEdit() {
             theme_advanced_resizing : true,
 
             // Example content CSS (should be your site CSS)
-            content_css : "http://www.leino.net/css/tinymce.css",
+            content_css : extensionBaseURI+"css/tinymce.css",
 
             // Replace values for the template plugin
             template_replace_values : {
@@ -137,7 +137,7 @@ function loadNotes()
                     if(data.trim() == ""){
                         var gcid = data2.match(/\bGC[^\b]*?\b/gi);
                         if(rdata[gcid] > 0){                     
-                            c[3].innerHTML = "<img class='sticky_note' src='http://www.leino.net/geo/"+rdata[gcid]+".gif'>";
+                            c[3].innerHTML = "<img class='sticky_note' src='"+extensionBaseURI+"img/"+rdata[gcid]+".png'>";
                         }
                     }
                  });
@@ -154,7 +154,7 @@ if (window.top === window) {
                 var enhancementSettings = msgEvent.message;
                 if(enhancementSettings['enhanced_notes_enabled'] != 'disabled'){
                     var script3 = document.createElement("script");
-                    script3.innerHTML = "var enhanced_notes_remote_database_url = '"+enhancementSettings['enhanced_notes_remote_database_url']+"'; var editMode = false; document.ready = loadNotes();";
+                    script3.innerHTML = "var extensionBaseURI = '"+safari.extension.baseURI+"';var enhanced_notes_remote_database_url = '"+enhancementSettings['enhanced_notes_remote_database_url']+"'; var editMode = false; document.ready = loadNotes();";
                     script3.innerHTML = script3.innerHTML + ajaxSave.valueOf();
                     script3.innerHTML = script3.innerHTML + ajaxLoad.valueOf()
                     script3.innerHTML = script3.innerHTML + markStatusSolved.valueOf()
