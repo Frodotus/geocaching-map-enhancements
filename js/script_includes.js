@@ -47,7 +47,17 @@ function ajaxSave() {
               success: function ( data ) {ed.setProgressState(0);},
             });
         } else if(enhanced_notes_enabled == 'local') {
-            localStorage.setItem(id, ed.getContent());
+            var data = localStorage.getItem(id);
+            if(data){
+                var status = 1;                
+                var odata = JSON.parse(data);
+                if(odata['status']) status = odata['status']; 
+                data = {'status': status, 'name': name, 'content': ed.getContent()};
+            } else {
+                data = {status: 1, 'name': name, content: ed.getContent()}
+            }
+            data = JSON.stringify(data);
+            localStorage.setItem(id, data);
             ed.setProgressState(0);
         }
 }
@@ -111,8 +121,12 @@ function loadNotes()
             });
         } else if(enhanced_notes_enabled == 'local') {
             var data = localStorage.getItem(cache_id);
-            if(!data) data = "";
-            $('#cache_note').replaceWith('<div id="cache_note" style="width:100%">'+data+'</div><a id="cache_note_save" class="btn" href="javascript:;" onclick="geoMceEdit();return false;"><span>Edit</span></a>');
+            if(data){
+                data = JSON.parse(data);
+            } else {
+                data = {'status': 1, 'content': ''}
+            }
+            $('#cache_note').replaceWith('<div id="cache_note" style="width:100%">'+data['content']+'</div><a id="cache_note_save" class="btn" href="javascript:;" onclick="geoMceEdit();return false;"><span>Edit</span></a>');
         } else {
         }
         $('.CacheDetailsNavLinks').append('<li><a class="lnk" href="javascript:;" onclick="markStatusSolved(50);return false;"><img src="'+extensionBaseURI+'img/50.png"> <span>Mark as field solvable</span></a></li>');
