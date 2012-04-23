@@ -18,6 +18,7 @@
 // @attribution jenda^^ (http://userscripts.org/scripts/show/127710)
 // @icon	http://geo.inge.org.uk/userscripts/GeocachingMap48.png
 // ==/UserScript==
+if($('#map_canvas').length != 0){
 
 (function(){
 //	Grid reference conversion adapted from code (C) Copyright Chris Veness, 2005-2010, used under a Creative Commons CC-BY license.
@@ -901,3 +902,4 @@ if( page.match(/cache_details\.aspx/) ) {
 	}
 }
 })();
+}
