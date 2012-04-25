@@ -47,7 +47,23 @@ function ajaxSave() {
               type: 'POST',
               url: enhanced_notes_remote_database_url+"index.php?id="+id+"&name="+name,
               data: ed.getContent(),
-              success: function ( data ) {ed.setProgressState(0);},
+              success: function ( data ) {
+                        var et = "Cache note saved at: "+enhanced_notes_remote_database_url+"index.php?id="+id;
+                        $.pageMethod("SetUserCacheNote", JSON.stringify({ dto: { et: et, ut: userToken} }), function (r) {
+                            var r = JSON.parse(r.d);
+                            if (r.success == true) {
+                                ed.setProgressState(0);
+                            } else {
+                                alert(cacheNoteText.ErrorInSaving);
+                            }
+
+                        });
+
+
+
+
+
+                },
             });
         } else if(enhanced_notes_enabled == 'local') {
             var data = localStorage.getItem(id);
