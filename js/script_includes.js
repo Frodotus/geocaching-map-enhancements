@@ -101,7 +101,6 @@ function geoMceEdit() {
 
 function enhanceTitle()
 {
-    alert("enhance_title");
     if($('#ctl00_ContentBody_hlFoundItLog').length != 0){
         var cache_name = $('#ctl00_ContentBody_CacheName').html();    
         $('#ctl00_ContentBody_CacheName').html("<img id='found_stamp' src='"+extensionBaseURI+"img/found.png'> "+cache_name);
