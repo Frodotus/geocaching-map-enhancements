@@ -58,11 +58,6 @@ function ajaxSave() {
                             }
 
                         });
-
-
-
-
-
                 },
             });
         } else if(enhanced_notes_enabled == 'local') {
@@ -78,6 +73,19 @@ function ajaxSave() {
             data = JSON.stringify(data);
             localStorage.setItem(id, data);
             ed.setProgressState(0);
+        } else if(enhanced_notes_enabled == 'enabled') {
+            var et = ed.getContent();
+            if (et.length > 500)
+                et = et.substr(0, 500);
+                et = escape(et);
+            $.pageMethod("SetUserCacheNote", JSON.stringify({ dto: { et: et, ut: userToken} }), function (r) {
+                var r = JSON.parse(r.d);
+                if (r.success == true) {
+                    ed.setProgressState(0);
+                } else {
+                    alert(cacheNoteText.ErrorInSaving);
+                }
+            });
         }
 }
 
@@ -133,7 +141,7 @@ function loadNotes()
               url: enhanced_notes_remote_database_url+"index.php?id="+cache_id
             }).done(function ( data ) {
                 if(data == ""){
-                  data = $('#cache_note').html();
+                  data = unescape($('#cache_note').html());
                   if(data == "Click to enter a note"){        
                       data = "";
                   }
@@ -146,9 +154,18 @@ function loadNotes()
             if(data){
                 data = JSON.parse(data);
             } else {
-                data = {'status': 1, 'content': ''}
+                data = {'status': 1, 'content': unescape($('#cache_note').html())}
             }
             $('#cache_note').replaceWith('<div id="cache_note" style="width:100%">'+data['content']+'</div><a id="cache_note_save" class="btn" href="javascript:;" onclick="geoMceEdit();return false;"><span>Edit</span></a>');
+        } else if(enhanced_notes_enabled == 'enabled') {
+            var data = localStorage.getItem(cache_id);
+            if(data){
+                data = JSON.parse(data);
+            } else {
+                data = {'status': 1, 'content': ''}
+            }
+            data = unescape($('#cache_note').html());
+            $('#cache_note').replaceWith('<div id="cache_note" style="width:100%">'+data+'</div><a id="cache_note_save" class="btn" href="javascript:;" onclick="geoMceEdit();return false;"><span>Edit</span></a>');
         } else {
         }
         $('.CacheDetailsNavLinks').append('<li><a class="lnk" href="javascript:;" onclick="markStatusSolved(50);return false;"><img src="'+extensionBaseURI+'img/50.png"> <span>Mark as field solvable</span></a></li>');
